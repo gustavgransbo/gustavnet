@@ -12,7 +12,7 @@ class Loss:
     def gradient(self, prediction: Tensor, target: Tensor) -> float:
         raise NotImplementedError
 
-class MSE:
+class MSE(Loss):
     """
     Mean squared error loss:
     J = (y - y_hat)^2

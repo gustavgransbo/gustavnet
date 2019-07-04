@@ -4,7 +4,7 @@ A NeuralNet that combines multiple different layers
 
 from GustavNet.tensor import Tensor
 from GustavNet.layer import Layer
-from typing import Sequence
+from typing import Sequence, Tuple, Iterator
 
 class Model:
 
@@ -21,5 +21,10 @@ class Model:
         for layer in reversed(self.layers):
             grad = layer.backward(grad)
         return grad
+
+    def get_weights_and_grads(self) -> Iterator[Tuple[str, Tensor]]:
+        for layer in self.layers:
+            for name, weights in layer.params.items():
+                yield weights, layer.gradients[name]
 
     

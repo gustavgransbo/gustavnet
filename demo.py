@@ -1,18 +1,46 @@
 """
-A demo of the package
+Solves the XOR problem using GustavNet
 """
 
 from GustavNet.nn import Model
 from GustavNet.tensor import Tensor
-from GustavNet.layer import Dense
+from GustavNet.layer import Dense, Tanh
 from GustavNet.loss import MSE
+from GustavNet.optim import SGD
 import numpy as np
 
-net = Model([Dense(20, 10), Dense(10, 1)])
+net = Model(
+    [Dense(2, 2),
+    Tanh(),
+    Dense(2, 2)]
+ )
 
-X = np.random.randn(2, 20)
-y = np.ones((2,1))
-loss = MSE()
+X = np.asarray([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+Y = np.asarray([
+    [1, 0],
+    [0, 1],
+    [0, 1],
+    [1, 0]
+])
+mse_loss = MSE()
+sgd_optimizer = SGD()
 
-pred = net.forward(X)
-grad = net.backward(loss.gradient(pred, y))
+
+for _ in range(5000):
+    pred = net.forward(X)
+    net.backward(mse_loss.gradient(pred, Y))
+    sgd_optimizer.step(net)
+    
+    loss = mse_loss.loss(pred, Y)
+    print("MSE: %.4f" % loss)
+    
+for x, y in zip(X, Y):
+    pred = net.forward(x)
+    print(x, pred.round(2), y)
+
+    

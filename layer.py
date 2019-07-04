@@ -5,7 +5,7 @@ A layer has two functions:
 """
 
 from GustavNet.tensor import Tensor
-from typing import Dict
+from typing import Dict, Callable
 import numpy as np
 
 class Layer:
@@ -60,6 +60,34 @@ class Dense(Layer):
 
         return grad @ self.params['W'].T
 
+TensorFunction = Callable[[Tensor], Tensor],
+
+class Activation(Layer):
+    def __init__(self, f: TensorFunction, f_prime: TensorFunction) -> None:
+        super().__init__()
+        self.f = f
+        self.f_prime = f_prime
+
+    def forward(self, inputs: Tensor) -> Tensor:
+        """
+        y = f(x)
+        """
+        self.inputs = inputs
+        return self.f(inputs)
+
+    def backward(self, grad: Tensor) -> Tensor:
+        """ (grad = dJ/dy)
+        dJ/dx = df/dx * dJ/dy
+        """
+        return self.f_prime(self.inputs) * grad
+
+
+class Tanh(Activation):
+    """
+    Applies the hyperbolic tangent function to input
+    """
+    def __init__(self) -> None:
+        super().__init__(np.tanh, lambda x: 1 - np.tanh(x) ** 2)
 
 
 
