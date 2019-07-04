@@ -2,7 +2,7 @@
 Optimizer for the NeuralNetwork model
 """
 
-from GustavNet.nn import Model
+from gustavnet.nn import Model
 
 class Optimizer:
     def step(self, net: Model) -> None:

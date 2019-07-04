@@ -2,8 +2,8 @@
 A NeuralNet that combines multiple different layers
 """
 
-from GustavNet.tensor import Tensor
-from GustavNet.layer import Layer
+from gustavnet.tensor import Tensor
+from gustavnet.layer import Layer
 from typing import Sequence, Tuple, Iterator
 
 class Model:

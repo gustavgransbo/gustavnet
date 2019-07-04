@@ -1,7 +1,7 @@
 """
 Loss functions
 """
-from GustavNet.tensor import Tensor
+from gustavnet.tensor import Tensor
 import numpy as np
 
 class Loss:

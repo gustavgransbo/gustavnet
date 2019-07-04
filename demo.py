@@ -1,12 +1,12 @@
 """
-Solves the XOR problem using GustavNet
+Solves the XOR problem using gustavnet
 """
 
-from GustavNet.nn import Model
-from GustavNet.tensor import Tensor
-from GustavNet.layer import Dense, Tanh
-from GustavNet.loss import MSE
-from GustavNet.optim import SGD
+from gustavnet.nn import Model
+from gustavnet.tensor import Tensor
+from gustavnet.layer import Dense, Tanh
+from gustavnet.loss import MSE
+from gustavnet.optim import SGD
 import numpy as np
 
 net = Model(

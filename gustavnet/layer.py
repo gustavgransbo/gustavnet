@@ -4,7 +4,7 @@ A layer has two functions:
 2. It propagates a gradient backwards
 """
 
-from GustavNet.tensor import Tensor
+from gustavnet.tensor import Tensor
 from typing import Dict, Callable
 import numpy as np
 
