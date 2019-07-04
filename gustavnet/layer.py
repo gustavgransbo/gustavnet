@@ -63,6 +63,9 @@ class Dense(Layer):
 TensorFunction = Callable[[Tensor], Tensor],
 
 class Activation(Layer):
+    """
+    Applies an activation function elementwise across input
+    """
     def __init__(self, f: TensorFunction, f_prime: TensorFunction) -> None:
         super().__init__()
         self.f = f
@@ -88,6 +91,20 @@ class Tanh(Activation):
     """
     def __init__(self) -> None:
         super().__init__(np.tanh, lambda x: 1 - np.tanh(x) ** 2)
+
+def sigmoid(x: float) -> float:
+    return 1 / (1 + np.exp(-x))
+
+def sigmoid_prime(x: float) -> float:
+    s = sigmoid(x)
+    return s * (1 - s)
+
+class Sigmoid(Activation):
+    """
+    Applies the sigmoid function to input
+    """
+    def __init__(self) -> None:
+        super().__init__(sigmoid, sigmoid_prime)
 
 
 

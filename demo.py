@@ -4,15 +4,16 @@ Solves the XOR problem using gustavnet
 
 from gustavnet.nn import Model
 from gustavnet.tensor import Tensor
-from gustavnet.layer import Dense, Tanh
-from gustavnet.loss import MSE
+from gustavnet.layer import Dense, Tanh, Sigmoid
+from gustavnet.loss import MSE, BinaryCrossEntropy
 from gustavnet.optim import SGD
 import numpy as np
 
 net = Model(
     [Dense(2, 2),
     Tanh(),
-    Dense(2, 2)]
+    Dense(2, 1),
+    Sigmoid()]
  )
 
 X = np.asarray([
@@ -22,16 +23,16 @@ X = np.asarray([
     [1, 1]
 ])
 Y = np.asarray([
-    [1, 0],
-    [0, 1],
-    [0, 1],
-    [1, 0]
+    [0],
+    [1],
+    [1],
+    [0]
 ])
-mse_loss = MSE()
-sgd_optimizer = SGD()
+mse_loss = BinaryCrossEntropy()
+sgd_optimizer = SGD(learning_rate=0.1)
 
 
-for _ in range(5000):
+for _ in range(10000):
     pred = net.forward(X)
     net.backward(mse_loss.gradient(pred, Y))
     sgd_optimizer.step(net)
@@ -42,5 +43,3 @@ for _ in range(5000):
 for x, y in zip(X, Y):
     pred = net.forward(x)
     print(x, pred.round(2), y)
-
-    
