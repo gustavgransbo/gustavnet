@@ -22,25 +22,29 @@ class Layer:
 
 class Dense(Layer):
     """
-    This dense layer calculates output as y = Wx + b
+    This dense layer takes an input x and calculates output as y = xW + b
+    Where the dimensions of all factors are:
+    x: BxN
+    W: NxM
+    b: M
+    y: M
     """
 
     def __init__(self, input_size: int, output_size: int) -> None:
         super().__init__()
 
         # TODO: Don't use a normal distribution to initialize weights
-        self.params['W'] = np.random.randn(output_size, input_size)
-        self.params['b'] = np.random.randn(output_size, 1)
+        self.params['W'] = np.random.randn(input_size, output_size)
+        self.params['b'] = np.random.randn(output_size)
     
     def forward(self, inputs: Tensor) -> Tensor:
         """
         Propagates input (x) forward acording to:
-        y = Wx + b
+        y = xW + b
         """
-
         # Save inputs for backpropagation
         self.inputs = inputs
-        return self.params['W'] @ inputs + self.params['b']
+        return  inputs @ self.params['W'] + self.params['b']
 
     def backward(self, grad: Tensor) -> Tensor:
         """
@@ -51,10 +55,10 @@ class Dense(Layer):
         dJ/dx = dy/dx * dJ/dy, dy/dx = W
         dJ/db = dy/db * dJ/dy, dy/db = 1
         """
-        self.gradients['W'] = (self.inputs @ grad).T
-        self.gradients['b'] = grad.sum(0)[...,np.newaxis]
+        self.gradients['W'] = self.inputs.T @ grad
+        self.gradients['b'] = grad.sum(0)
 
-        return grad @ self.params['W']
+        return grad @ self.params['W'].T
 
 
 

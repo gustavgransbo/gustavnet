@@ -12,7 +12,6 @@ class Model:
         self.layers = layers
 
     def forward(self, inputs: Tensor) -> Tensor:
-        
         for layer in self.layers:
             inputs = layer.forward(inputs)
         

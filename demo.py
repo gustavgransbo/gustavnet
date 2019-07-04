@@ -10,8 +10,8 @@ import numpy as np
 
 net = Model([Dense(20, 10), Dense(10, 1)])
 
-X = np.random.randn(20, 1)
-y = np.ones((1,1))
+X = np.random.randn(2, 20)
+y = np.ones((2,1))
 loss = MSE()
 
 pred = net.forward(X)
